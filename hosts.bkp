@@ -1,0 +1,2 @@
+[myvirtualmachines]
+my_host ansible_host=localhost ansible_user=user1 ansible_port=2222
