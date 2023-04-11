@@ -1,9 +1,10 @@
 #!/usr/bin/python
 
 # Copyright: (c) 2018, Terry Jones <terry.jones@example.org>
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+# GNU General Public License v3.0+ (see COPYING or htps://www.gnu.org/licenses/gpl-3.0.txt)
 from __future__ import (absolute_import, division, print_function)
 from ansible.module_utils.basic import AnsibleModule
+import platform
 __metaclass__ = type
 
 DOCUMENTATION = r'''
@@ -107,7 +108,7 @@ def run_module():
     # manipulate or modify the state as needed (this is going to be the
     # part where your module will do what it needs to do)
     result['original_message'] = module.params['name']
-    result['message'] = 'bella'
+    result['message'] = 'cristiano test ' + platform.node()
 
     # use whatever logic you need to determine whether or not this module
     # made any modifications to your target
