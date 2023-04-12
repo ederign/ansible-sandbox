@@ -18,8 +18,8 @@ ansible virtualmachines -m ping -i inventory.yaml
 
 ansible-playbook -i inventory.yaml playbook.yaml
 
-##run plugin (aparentement roda local)
+##run plugin (ansible local)
 ansible-playbook -i inventory.yaml testmod.yaml
 
-##jeito que funcionou pra rodar no node1
-ansible-navigator run testmod.yaml -i inventory -m stdout
+##roda via execution environment em um novo container
+ansible-navigator run testmod.yaml -i inventory-ee.yaml -m stdout

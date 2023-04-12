@@ -1,2 +1,7 @@
 TODO
 
+.idea
+
+*-artifact-*.json
+
+ansible-navigator.log
