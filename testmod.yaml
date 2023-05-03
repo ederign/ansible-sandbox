@@ -9,3 +9,16 @@
     - name: dump test output
       debug:
         msg: "{{ testout }}"
+
+- name: test java module
+  hosts: virtualmachines
+  tasks:
+    - name: run the java module
+      ansible-quarkus-module-runner:
+        name: tiago dolphine
+        age: 39
+        address: campinas
+      register: testout
+    - name: dump java test output
+      debug:
+        msg: "{{ testout }}"
