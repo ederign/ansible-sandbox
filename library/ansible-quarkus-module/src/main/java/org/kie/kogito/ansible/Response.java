@@ -7,10 +7,12 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 public class Response {
     private String msg;
     private JsonNode params;
+    private JsonNode output;
 
-    public Response(String msg, JsonNode params) {
+    public Response(String msg, JsonNode params, JsonNode output) {
         this.msg = msg;
         this.params = params;
+        this.output = output;
     }
 
     public String getMsg() {
@@ -19,5 +21,9 @@ public class Response {
 
     public JsonNode getParams() {
         return params;
+    }
+
+    public JsonNode getOutput() {
+        return output;
     }
 }
