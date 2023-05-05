@@ -47,7 +47,7 @@ public class JavaModule implements QuarkusApplication {
 
             JsonNode definition = input.get("definition");
             Workflow workflow = buildWorkflow(definition.asText());
-            JsonNodeModel workflowResponse = application.execute(workflow, new HashMap<>());
+            JsonNodeModel workflowResponse = application.execute(workflow, input);
 
             output(new Response("Response from java module", workflowResponse.getWorkflowdata()));
         }catch (Exception e){
