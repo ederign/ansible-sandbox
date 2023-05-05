@@ -1,6 +1,12 @@
 package org.kie.kogito.ansible;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -12,6 +18,8 @@ import jakarta.inject.Inject;
 import org.kie.kogito.serverless.workflow.executor.StaticWorkflowApplication;
 import org.kie.kogito.serverless.workflow.fluent.WorkflowBuilder;
 import org.kie.kogito.serverless.workflow.models.JsonNodeModel;
+import org.kie.kogito.serverless.workflow.utils.ServerlessWorkflowUtils;
+import org.kie.kogito.serverless.workflow.utils.WorkflowFormat;
 
 import static org.kie.kogito.serverless.workflow.fluent.StateBuilder.inject;
 import static org.kie.kogito.serverless.workflow.fluent.WorkflowBuilder.jsonObject;
@@ -28,26 +36,42 @@ public class JavaModule implements QuarkusApplication {
     @Override
     public int run(String... args) throws Exception {
         if (args.length < 1) {
-            output(new Response("no arguments from java", null, null));
+            output(new Response("no arguments from java",  null));
             return 0;
         }
-        String inputFilePath = args[0];
-        JsonNode input = objectMapper.readTree(Paths.get(inputFilePath).toFile());
 
-        Workflow workflow = buildWorkflow("the definition....");
-        JsonNodeModel workflowResponse = application.execute(workflow, (JsonNode) input.deepCopy());
+        try {
+            //Ansible send the input parameters as a json which is stored in the filesystem
+            //The input parameter arg[0] is the URI of this Json
+            String inputFilePath = args[0];
+            JsonNode input = objectMapper.readTree(Paths.get(inputFilePath).toFile());
 
-        output(new Response("Response from java module", input, workflowResponse.getWorkflowdata()));
+            JsonNode definition = input.get("definition");
+            Workflow workflow = buildWorkflow(definition.asText());
+            JsonNodeModel workflowResponse = application.execute(workflow, input);
+
+            output(new Response("Response from java module", workflowResponse.getWorkflowdata()));
+        }catch (Exception e){
+            output(new Response(e.getMessage(), null));
+        }
         return 0;
     }
 
-    public Workflow buildWorkflow(String definition) {
-        // define your flow using Fluent version Serverless workflow SDK or pare the defintion .swf.json
+    public Workflow buildWorkflow(String definitionFilePath) {
+        try (Reader reader = Files.newBufferedReader(Paths.get(definitionFilePath))) {
+            return ServerlessWorkflowUtils.getWorkflow(reader, WorkflowFormat.JSON);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public Workflow getDefaultWorkflow(){
         return WorkflowBuilder.workflow("HelloWorld").start(inject(jsonObject().put("response", "Hello World from Workflow !!!"))).end().build();
     }
 
     private void output(Response response) {
         try {
+            //ansible receives the response from the console output as a Json
             System.out.println(objectMapper.writeValueAsString(response));
         } catch (JsonProcessingException e) {
             throw new IllegalStateException(e);

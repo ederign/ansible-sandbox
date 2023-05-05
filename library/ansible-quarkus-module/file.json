@@ -1,3 +1,4 @@
 {
-    "name" : "tiago"
+    "name" : "tiago",
+    "definition" : "/tmp/hello.sw.json"
 }
