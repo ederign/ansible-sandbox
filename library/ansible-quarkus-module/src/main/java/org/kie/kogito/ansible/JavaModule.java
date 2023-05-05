@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
@@ -57,7 +58,7 @@ public class JavaModule implements QuarkusApplication {
     }
 
     public Workflow buildWorkflow(String definitionFilePath) {
-        try (Reader reader = new FileReader(definitionFilePath)) {
+        try (Reader reader = Files.newBufferedReader(Paths.get(definitionFilePath))) {
             return ServerlessWorkflowUtils.getWorkflow(reader, WorkflowFormat.JSON);
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
