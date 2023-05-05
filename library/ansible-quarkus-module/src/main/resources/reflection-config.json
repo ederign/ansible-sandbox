@@ -9,33 +9,12 @@
     "allPublicFields": true
   },
   {
-    "name": "com.example.JacksonIssueDemo$JsonTemplate",
-    "allDeclaredFields": true,
-    "allDeclaredMethods": true,
+    "name": "io.serverlessworkflow.api.states.InjectState",
     "allDeclaredConstructors": true,
-    "fields": [
-      {
-        "name": "finalValue",
-        "allowWrite": true
-      }
-    ]
-  },
-  {
-    "name": "com.fasterxml.jackson.databind.ext.Java7HandlersImpl",
-    "methods": [
-      {
-        "name": "<init>",
-        "parameterTypes": []
-      }
-    ]
-  },
-  {
-    "name": "com.fasterxml.jackson.databind.ext.Java7SupportImpl",
-    "methods": [
-      {
-        "name": "<init>",
-        "parameterTypes": []
-      }
-    ]
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
+    "allPublicFields": true
   }
 ]
