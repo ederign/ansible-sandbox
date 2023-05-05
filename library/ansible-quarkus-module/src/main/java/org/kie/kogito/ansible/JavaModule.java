@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Paths;
+import java.util.HashMap;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -44,7 +45,7 @@ public class JavaModule implements QuarkusApplication {
 
         JsonNode definition = input.get("definition");
         Workflow workflow = buildWorkflow(definition.asText());
-        JsonNodeModel workflowResponse = application.execute(workflow, input);
+        JsonNodeModel workflowResponse = application.execute(workflow, new HashMap<>());
 
         output(new Response("Response from java module", workflowResponse.getWorkflowdata()));
         return 0;

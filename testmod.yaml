@@ -13,11 +13,16 @@
 - name: test java module
   hosts: virtualmachines
   tasks:
+    - name: copy file from local host to remote host (relative path, ./files/)
+      copy:
+        src:  workflow.sw.json
+        dest: /tmp/workflow.sw.json
     - name: run the java module
       ansible-quarkus-module-runner:
         name: tiago dolphine
         age: 39
         address: campinas
+        definition : /tmp/workflow.sw.json
       register: testout
     - name: dump java test output
       debug:
