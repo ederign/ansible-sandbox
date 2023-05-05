@@ -1,4 +1,4 @@
 {
     "name" : "tiago",
-    "definition" : "/Users/tdolphin/dev/redhat/fork/ansible-sandbox/library/ansible-quarkus-module/hello.sw.json"
+    "definition" : "/tmp/hello.sw.json"
 }
