@@ -38,16 +38,21 @@ public class JavaModule implements QuarkusApplication {
             output(new Response("no arguments from java",  null));
             return 0;
         }
-        //Ansible send the input parameters as a json which is stored in the filesystem
-        //The input parameter arg[0] is the URI of this Json
-        String inputFilePath = args[0];
-        JsonNode input = objectMapper.readTree(Paths.get(inputFilePath).toFile());
 
-        JsonNode definition = input.get("definition");
-        Workflow workflow = buildWorkflow(definition.asText());
-        JsonNodeModel workflowResponse = application.execute(workflow, new HashMap<>());
+        try {
+            //Ansible send the input parameters as a json which is stored in the filesystem
+            //The input parameter arg[0] is the URI of this Json
+            String inputFilePath = args[0];
+            JsonNode input = objectMapper.readTree(Paths.get(inputFilePath).toFile());
 
-        output(new Response("Response from java module", workflowResponse.getWorkflowdata()));
+            JsonNode definition = input.get("definition");
+            Workflow workflow = buildWorkflow(definition.asText());
+            JsonNodeModel workflowResponse = application.execute(workflow, new HashMap<>());
+
+            output(new Response("Response from java module", workflowResponse.getWorkflowdata()));
+        }catch (Exception e){
+            output(new Response(e.getMessage(), null));
+        }
         return 0;
     }
 
